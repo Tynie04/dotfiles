@@ -17,8 +17,10 @@
     # hyprland ecosystem
     waybar
     rofi
-    swaylock
+    hyprlock
     swayidle
+    pavucontrol
+    wlogout
     dunst
     hyprpaper
     grim

@@ -93,7 +93,7 @@
     "format": "{}",
     "return-type": "json",
     "interval": 10,
-    "exec": "$(pwd)/scripts/docker-stats/docker-stats",
+    "exec": "$HOME/.config/waybar/scripts/docker-stats/docker-stats",
     "tooltip": true
   },
 
@@ -101,7 +101,13 @@
     "format": "{}",
     "tooltip": true,
     "interval": 1800,
-    "exec": "$(pwd)/scripts/weather-stats/weather-stats",
+    "exec": "$HOME/.config/waybar/scripts/weather-stats/weather-stats",
     "return-type": "json"
+  },
+
+  "custom/lock": {
+    "tooltip": false,
+    "on-click": "hyprlock &",
+    "format": "󰌾"
   }
 }
