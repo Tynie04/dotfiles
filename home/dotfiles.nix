@@ -7,6 +7,7 @@ in
   home.file = {
     # Live symlinks — edit without rebuild
     ".config/hypr/hyprland.conf".source         = link ".config/hypr/hyprland.conf";
+    ".config/hypr/hyprpaper.conf".source        = link ".config/hypr/hyprpaper.conf";
     ".config/waybar/config.jsonc".source        = link ".config/waybar/config.jsonc";
     ".config/waybar/style.css".source           = link ".config/waybar/style.css";
     ".config/waybar/reload.sh".source           = link ".config/waybar/reload.sh";
