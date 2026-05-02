@@ -27,6 +27,7 @@
     slurp
     wl-clipboard
     brightnessctl
+    playerctl
     pamixer
     polkit_gnome
     adwaita-icon-theme

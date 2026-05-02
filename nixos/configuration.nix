@@ -121,9 +121,6 @@
     initialPassword = "changeme";
   };
 
-  system.activationScripts.nixos-config-ownership = ''
-   chown tijnw /etc/nixos/configuration.nix
-  '';
 
   programs.hyprland.enable = true;
 
