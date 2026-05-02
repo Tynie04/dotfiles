@@ -36,10 +36,12 @@
 
     # network
     networkmanagerapplet
+    blueman
 
     # coding
     claude-code
     python3
     uv
+    go
   ];
 }

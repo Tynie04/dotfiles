@@ -92,6 +92,10 @@
     nerd-fonts.jetbrains-mono
   ];
 
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
+
   nixpkgs.config.allowUnfree = true;
   security.polkit.enable = true;
   security.rtkit.enable = true;

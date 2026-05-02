@@ -14,7 +14,6 @@
     "cpu",
     "memory",
     "custom/docker",
-    "tray",
     "custom/lock",
     "custom/power"
   ],

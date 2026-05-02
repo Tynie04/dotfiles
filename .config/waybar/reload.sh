@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-CONFIG_FILE="$(pwd)/config.jsonc"
-STYLE_FILE="$(pwd)/style.css"
+CONFIG_FILE="$HOME/.config/waybar/config.jsonc"
+STYLE_FILE="$HOME/.config/waybar/style.css"
 
 if ! command -v inotifywait >/dev/null 2>&1; then
   echo "Error: inotifywait not found. Please install inotify-tools."
