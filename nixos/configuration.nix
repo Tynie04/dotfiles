@@ -60,7 +60,11 @@
     pulse.enable = true;
   };
 
-  systemd.services.greetd.preStart = "${pkgs.numlockx}/bin/numlockx on";
+  systemd.services.greetd.preStart = ''
+    for i in 1 2 3 4 5 6; do
+      ${pkgs.kbd}/bin/setleds -D +num < /dev/tty$i 2>/dev/null || true
+    done
+  '';
 
   services.greetd = {
     enable = true;
