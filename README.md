@@ -72,7 +72,15 @@ sudo nixos-rebuild switch
 
 This installs all packages, applies system config, and sets up Home Manager including the `.config` symlinks.
 
-### 7. Set up SSH key for Git signing and push
+### 7. Change your password
+
+The initial password is set to `changeme`. Change it immediately after first login:
+
+```bash
+passwd  # you will be prompted to enter a new password
+```
+
+### 8. Set up SSH key for Git signing and push
 
 The SSH key for Git commit signing is machine-specific and not stored in this repo. Generate a new key and add it to GitHub:
 

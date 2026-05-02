@@ -1,0 +1,40 @@
+{ pkgs, ... }:
+{
+  home.packages = with pkgs; [
+    # terminal & editors
+    kitty
+    neovim
+    ripgrep
+    unzip
+    zip
+    btop
+
+    # browser & apps
+    firefox
+    vscode
+    xfce.thunar
+
+    # hyprland ecosystem
+    waybar
+    rofi
+    swaylock
+    swayidle
+    dunst
+    hyprpaper
+    grim
+    slurp
+    wl-clipboard
+    brightnessctl
+    pamixer
+    polkit_gnome
+    adwaita-icon-theme
+
+    # network
+    networkmanagerapplet
+
+    # coding
+    claude-code
+    python3
+    uv
+  ];
+}

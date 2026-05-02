@@ -113,9 +113,6 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "video" "audio" ];
     initialPassword = "changeme";
-    packages = with pkgs; [
-      tree
-    ];
   };
 
   system.activationScripts.nixos-config-ownership = ''
@@ -125,51 +122,11 @@
   programs.hyprland.enable = true;
 
 
-  # List packages installed in system profile.
-  # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
-  # terminal & terminal based editors
-    kitty
-    vim
-    neovim
-    ripgrep
-    unzip
-    zip
-
-    # system tools
     git
+    vim
     wget
     curl
-    btop
-
-    # browser & apps
-    firefox
-    vscode
-    xfce.thunar
-    gvfs
-
-    # hyprland ecosystem
-    waybar
-    wofi
-    swaylock
-    swayidle
-    dunst
-    hyprpaper
-    grim
-    slurp
-    wl-clipboard
-    brightnessctl
-    pamixer
-    polkit_gnome
-    adwaita-icon-theme
-
-    # network
-    networkmanagerapplet
-
-    # Coding
-    claude-code
-    python3
-    uv
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
