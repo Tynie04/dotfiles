@@ -100,3 +100,7 @@ git remote set-url origin git@github.com:Tynie04/dotfiles.git
 ```bash
 sudo nixos-rebuild switch
 ```
+
+## Credits
+
+- Waybar config based on [victordantasdev/waybar](https://github.com/victordantasdev/waybar)
