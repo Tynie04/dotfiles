@@ -13,6 +13,8 @@
     firefox
     vscode
     xfce.thunar
+    cheese
+    obs-studio
 
     # hyprland ecosystem
     waybar
