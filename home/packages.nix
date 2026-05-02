@@ -20,6 +20,7 @@
     waybar
     rofi
     hyprlock
+    hypridle
     pavucontrol
     wlogout
     copyq
