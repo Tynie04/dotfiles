@@ -60,6 +60,8 @@
     pulse.enable = true;
   };
 
+  systemd.services.greetd.preStart = "${pkgs.numlockx}/bin/numlockx on";
+
   services.greetd = {
     enable = true;
     settings = {
