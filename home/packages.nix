@@ -18,9 +18,9 @@
     waybar
     rofi
     hyprlock
-    swayidle
     pavucontrol
     wlogout
+    copyq
     dunst
     hyprpaper
     grim
