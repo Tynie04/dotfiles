@@ -33,6 +33,7 @@
     rofi
     hyprpaper
     dunst
+    libnotify
     wlogout
     copyq
     adwaita-icon-theme

@@ -17,6 +17,9 @@ in
     # Scripts — live symlink to dotfiles
     ".config/waybar/scripts".source = link ".config/waybar/scripts";
 
+    # Dunst notifications
+    ".config/dunst/dunstrc".source = link ".config/dunst/dunstrc";
+
     # Wlogout layout
     ".config/wlogout/layout".source = link ".config/wlogout/layout";
 
