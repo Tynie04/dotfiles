@@ -19,6 +19,10 @@ in
     # Wlogout layout
     ".config/wlogout/layout".source = link ".config/wlogout/layout";
 
+    # Rofi
+    ".config/rofi/theme.rasi".source  = link ".config/rofi/theme.rasi";
+    ".config/rofi/config.rasi".source = link ".config/rofi/config.rasi";
+
     # Kitty terminal
     ".config/kitty/kitty.conf".source = link ".config/kitty/kitty.conf";
 

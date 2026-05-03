@@ -1,0 +1,77 @@
+* {
+    bg:         #101010;
+    bg-alt:     #1a1a1a;
+    bg-hover:   #1e1e1e;
+    fg:         #c6d0f5;
+    fg-dim:     #737994;
+    accent:     #8caaee;
+    selected:   #8caaee;
+    urgent:     #e78284;
+
+    background-color: transparent;
+    text-color:       @fg;
+    font:             "JetBrainsMono Nerd Font 13";
+}
+
+window {
+    background-color: @bg;
+    border:           2px;
+    border-color:     @accent;
+    border-radius:    10px;
+    width:            580px;
+    padding:          12px;
+}
+
+mainbox {
+    spacing:  8px;
+    children: [ inputbar, listview ];
+}
+
+inputbar {
+    background-color: @bg-alt;
+    border-radius:    8px;
+    padding:          8px 12px;
+    spacing:          8px;
+    children:         [ prompt, entry ];
+}
+
+prompt {
+    text-color: @accent;
+}
+
+entry {
+    placeholder:       "search...";
+    placeholder-color: @fg-dim;
+}
+
+listview {
+    lines:        8;
+    scrollbar:    false;
+    spacing:      4px;
+}
+
+element {
+    background-color: transparent;
+    border-radius:    6px;
+    padding:          8px 12px;
+    spacing:          8px;
+    children:         [ element-icon, element-text ];
+}
+
+element.selected.normal {
+    background-color: @bg-hover;
+    text-color:       @accent;
+}
+
+element.urgent {
+    text-color: @urgent;
+}
+
+element-icon {
+    size:             1.2em;
+    vertical-align:   0.5;
+}
+
+element-text {
+    vertical-align: 0.5;
+}
