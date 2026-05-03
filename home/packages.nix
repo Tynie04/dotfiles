@@ -16,24 +16,27 @@
     cheese
     obs-studio
 
-    # hyprland ecosystem
-    waybar
-    rofi
+    # hyprland
     hyprlock
     hypridle
-    pavucontrol
-    wlogout
-    copyq
-    dunst
-    hyprpaper
+    polkit_gnome
     grim
     slurp
     wl-clipboard
     brightnessctl
     playerctl
     pamixer
-    polkit_gnome
+    pavucontrol
+
+    # rice
+    waybar
+    rofi
+    hyprpaper
+    dunst
+    wlogout
+    copyq
     adwaita-icon-theme
+    starship
 
     # network
     networkmanagerapplet

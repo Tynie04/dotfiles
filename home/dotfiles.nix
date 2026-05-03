@@ -18,6 +18,12 @@ in
 
     # Wlogout layout
     ".config/wlogout/layout".source = link ".config/wlogout/layout";
+
+    # Kitty terminal
+    ".config/kitty/kitty.conf".source = link ".config/kitty/kitty.conf";
+
+    # Starship prompt
+    ".config/starship.toml".source = link ".config/starship.toml";
   };
 
   home.activation.reloadHyprland = lib.hm.dag.entryAfter ["writeBoundary"] ''

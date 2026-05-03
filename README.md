@@ -1,8 +1,29 @@
 # dotfiles
 
-NixOS configuration and dotfiles for hermes2. Hyprland desktop, managed with NixOS modules and Home Manager.
+> NixOS configuration and dotfiles for **hermes2**. Declarative, reproducible, and easy to set up on any machine.
 
-**Stack:** NixOS 25.11 · Hyprland · Waybar · Kitty · Rofi · Dunst · Hyprpaper · Hyprlock
+![NixOS](https://img.shields.io/badge/NixOS-25.11-5277C3?style=for-the-badge&logo=nixos&logoColor=white)
+![Hyprland](https://img.shields.io/badge/Hyprland-Wayland-58E1FF?style=for-the-badge&logo=wayland&logoColor=white)
+![Home Manager](https://img.shields.io/badge/Home_Manager-module-7EBAE4?style=for-the-badge&logo=nixos&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
+
+---
+
+## Stack
+
+| Component | Tool |
+|---|---|
+| OS | NixOS 25.11 |
+| Window manager | Hyprland |
+| Bar | Waybar |
+| Terminal | Kitty |
+| Shell prompt | Starship |
+| Launcher | Rofi |
+| Notifications | Dunst |
+| Wallpaper | Hyprpaper |
+| Lock screen | Hyprlock |
+| Idle daemon | Hypridle |
+| Clipboard | CopyQ |
 
 ---
 
@@ -22,7 +43,8 @@ dotfiles/
 │   ├── hypr/                       # Hyprland, Hyprpaper, Hyprlock, Hypridle
 │   ├── waybar/                     # Waybar config and Go scripts
 │   ├── kitty/                      # Kitty terminal config
-│   └── wlogout/                    # Wlogout layout
+│   ├── wlogout/                    # Wlogout layout
+│   └── starship.toml               # Shell prompt config
 └── wallpapers/                     # Wallpaper images
 ```
 
@@ -81,7 +103,7 @@ This installs all packages, applies the system config, and sets up Home Manager 
 
 ### 7. Compile the Waybar scripts
 
-The weather and docker widgets are written in Go and must be compiled on the machine since binaries are architecture-specific.
+The weather and docker widgets are written in Go and must be compiled on the machine since binaries are not committed.
 
 ```bash
 cd ~/dotfiles/.config/waybar/scripts/weather-stats && CGO_ENABLED=0 go build -o weather-stats .
@@ -114,7 +136,7 @@ cd ~/dotfiles && git remote set-url origin git@github.com:Tynie04/dotfiles.git
 
 | Task | How |
 |---|---|
-| Edit Hyprland / Waybar config | Edit `~/dotfiles/.config/` directly, changes are live immediately |
+| Edit Hyprland / Waybar / Kitty config | Edit `~/dotfiles/.config/` directly, changes are live immediately |
 | Add a user package | Add to `home/packages.nix`, then rebuild |
 | Add a system package | Add to `nixos/configuration.nix`, then rebuild |
 | Test changes without cluttering boot entries | `sudo nixos-rebuild test` |
@@ -124,7 +146,8 @@ cd ~/dotfiles && git remote set-url origin git@github.com:Tynie04/dotfiles.git
 ---
 
 <details>
-<summary>Keybindings</summary>
+<summary><strong>Keybindings</strong></summary>
+<br>
 
 | Keybind | Action |
 |---|---|
@@ -151,13 +174,14 @@ cd ~/dotfiles && git remote set-url origin git@github.com:Tynie04/dotfiles.git
 </details>
 
 <details>
-<summary>Installed packages</summary>
+<summary><strong>Installed packages</strong></summary>
+<br>
 
 **System**
 `git` `vim` `wget` `curl`
 
 **Terminal & editors**
-`kitty` `neovim` `ripgrep` `unzip` `zip` `btop`
+`kitty` `neovim` `ripgrep` `unzip` `zip` `btop` `starship`
 
 **Apps**
 `firefox` `vscode` `thunar` `cheese` `obs-studio`
