@@ -123,7 +123,10 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "video" "audio" ];
     initialPassword = "changeme";
+    shell = pkgs.fish;
   };
+
+  programs.fish.enable = true;
 
 
   programs.hyprland.enable = true;

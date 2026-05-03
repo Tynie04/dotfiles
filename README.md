@@ -5,25 +5,26 @@
 ![NixOS](https://img.shields.io/badge/NixOS-25.11-5277C3?style=for-the-badge&logo=nixos&logoColor=white)
 ![Hyprland](https://img.shields.io/badge/Hyprland-Wayland-58E1FF?style=for-the-badge&logo=wayland&logoColor=white)
 ![Home Manager](https://img.shields.io/badge/Home_Manager-module-7EBAE4?style=for-the-badge&logo=nixos&logoColor=white)
-![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
+![Fish](https://img.shields.io/badge/Fish-shell-4AAB9B?style=for-the-badge&logo=fish&logoColor=white)
 
 ---
 
 ## Stack
 
-| Component | Tool |
-|---|---|
-| OS | NixOS 25.11 |
-| Window manager | Hyprland |
-| Bar | Waybar |
-| Terminal | Kitty |
-| Shell prompt | Starship |
-| Launcher | Rofi |
-| Notifications | Dunst |
-| Wallpaper | Hyprpaper |
-| Lock screen | Hyprlock |
-| Idle daemon | Hypridle |
-| Clipboard | CopyQ |
+| Component      | Tool        |
+| -------------- | ----------- |
+| OS             | NixOS 25.11 |
+| Window manager | Hyprland    |
+| Bar            | Waybar      |
+| Terminal       | Kitty       |
+| Shell          | Fish        |
+| Shell prompt   | Starship    |
+| Launcher       | Rofi        |
+| Notifications  | Dunst       |
+| Wallpaper      | Hyprpaper   |
+| Lock screen    | Hyprlock    |
+| Idle daemon    | Hypridle    |
+| Clipboard      | CopyQ       |
 
 ---
 
@@ -38,6 +39,7 @@ dotfiles/
 │   ├── home.nix                    # Home Manager entry point
 │   ├── git.nix                     # Git config and SSH signing
 │   ├── packages.nix                # User packages
+│   ├── shell.nix                   # Fish shell and Starship config
 │   └── dotfiles.nix                # Symlinks .config into place
 ├── .config/
 │   ├── hypr/                       # Hyprland, Hyprpaper, Hyprlock, Hypridle
@@ -134,14 +136,14 @@ cd ~/dotfiles && git remote set-url origin git@github.com:Tynie04/dotfiles.git
 
 ## Day-to-day
 
-| Task | How |
-|---|---|
-| Edit Hyprland / Waybar / Kitty config | Edit `~/dotfiles/.config/` directly, changes are live immediately |
-| Add a user package | Add to `home/packages.nix`, then rebuild |
-| Add a system package | Add to `nixos/configuration.nix`, then rebuild |
-| Test changes without cluttering boot entries | `sudo nixos-rebuild test` |
-| Apply changes permanently | `sudo nixos-rebuild switch` |
-| Save and push changes | `git add -A && git commit -m "..." && git push` |
+| Task                                         | How                                                               |
+| -------------------------------------------- | ----------------------------------------------------------------- |
+| Edit Hyprland / Waybar / Kitty config        | Edit `~/dotfiles/.config/` directly, changes are live immediately |
+| Add a user package                           | Add to `home/packages.nix`, then rebuild                          |
+| Add a system package                         | Add to `nixos/configuration.nix`, then rebuild                    |
+| Test changes without cluttering boot entries | `sudo nixos-rebuild test`                                         |
+| Apply changes permanently                    | `sudo nixos-rebuild switch`                                       |
+| Save and push changes                        | `git add -A && git commit -m "..." && git push`                   |
 
 ---
 
@@ -149,27 +151,27 @@ cd ~/dotfiles && git remote set-url origin git@github.com:Tynie04/dotfiles.git
 <summary><strong>Keybindings</strong></summary>
 <br>
 
-| Keybind | Action |
-|---|---|
-| `SUPER + Q` | Open terminal (`kitty`) |
-| `SUPER + C` | Close active window |
-| `SUPER + E` | File manager (`thunar`) |
-| `SUPER + Space` | App launcher (`rofi`) |
-| `SUPER + V` | Clipboard history (`copyq`) |
-| `SUPER + L` | Lock screen (`hyprlock`) |
-| `SUPER + F` | True fullscreen (over waybar) |
-| `SUPER + SHIFT + F` | Toggle floating |
-| `SUPER + SHIFT + S` | Screenshot region → clipboard + `~/Pictures` |
-| `Print` | Screenshot region → clipboard + `~/Pictures` |
-| `SUPER + M` | Exit Hyprland |
-| `SUPER + P` | Pseudo tile (dwindle) |
-| `SUPER + J` | Toggle split (dwindle) |
-| `SUPER + arrows` | Move focus |
-| `SUPER + 1-0` | Switch workspace |
-| `SUPER + SHIFT + 1-0` | Move window to workspace |
-| `SUPER + scroll` | Scroll through workspaces |
-| `SUPER + LMB drag` | Move window |
-| `SUPER + RMB drag` | Resize window |
+| Keybind               | Action                                       |
+| --------------------- | -------------------------------------------- |
+| `SUPER + Q`           | Open terminal (`kitty`)                      |
+| `SUPER + C`           | Close active window                          |
+| `SUPER + E`           | File manager (`thunar`)                      |
+| `SUPER + Space`       | App launcher (`rofi`)                        |
+| `SUPER + V`           | Clipboard history (`copyq`)                  |
+| `SUPER + L`           | Lock screen (`hyprlock`)                     |
+| `SUPER + F`           | True fullscreen (over waybar)                |
+| `SUPER + SHIFT + F`   | Toggle floating                              |
+| `SUPER + SHIFT + S`   | Screenshot region → clipboard + `~/Pictures` |
+| `Print`               | Screenshot region → clipboard + `~/Pictures` |
+| `SUPER + M`           | Exit Hyprland                                |
+| `SUPER + P`           | Pseudo tile (dwindle)                        |
+| `SUPER + J`           | Toggle split (dwindle)                       |
+| `SUPER + arrows`      | Move focus                                   |
+| `SUPER + 1-0`         | Switch workspace                             |
+| `SUPER + SHIFT + 1-0` | Move window to workspace                     |
+| `SUPER + scroll`      | Scroll through workspaces                    |
+| `SUPER + LMB drag`    | Move window                                  |
+| `SUPER + RMB drag`    | Resize window                                |
 
 </details>
 
@@ -181,7 +183,7 @@ cd ~/dotfiles && git remote set-url origin git@github.com:Tynie04/dotfiles.git
 `git` `vim` `wget` `curl`
 
 **Terminal & editors**
-`kitty` `neovim` `ripgrep` `unzip` `zip` `btop` `starship`
+`kitty` `fish` `neovim` `ripgrep` `unzip` `zip` `btop` `starship`
 
 **Apps**
 `firefox` `vscode` `thunar` `cheese` `obs-studio`

@@ -4,6 +4,7 @@
     ./git.nix
     ./packages.nix
     ./dotfiles.nix
+    ./shell.nix
   ];
 
   home.username = "tijnw";
