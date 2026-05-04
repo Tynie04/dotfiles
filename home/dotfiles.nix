@@ -20,8 +20,9 @@ in
     # Dunst notifications
     ".config/dunst/dunstrc".source = link ".config/dunst/dunstrc";
 
-    # Wlogout layout
-    ".config/wlogout/layout".source = link ".config/wlogout/layout";
+    # Wlogout
+    ".config/wlogout/layout".source    = link ".config/wlogout/layout";
+    ".config/wlogout/style.css".source = link ".config/wlogout/style.css";
 
     # Rofi
     ".config/rofi/theme.rasi".source  = link ".config/rofi/theme.rasi";

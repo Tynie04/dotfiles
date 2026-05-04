@@ -96,6 +96,7 @@
   hardware.bluetooth.powerOnBoot = true;
   services.blueman.enable = true;
 
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
   security.polkit.enable = true;
   security.rtkit.enable = true;

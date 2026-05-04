@@ -2,6 +2,9 @@
 
 > NixOS configuration and dotfiles for **hermes2**. Declarative, reproducible, and easy to set up on any machine.
 
+> [!IMPORTANT]
+> This is probably not the best or most optimal way of doing stuff, but since i am just starting to learn NixOs, it is the way i decided to do stuff for now, since it made sense for me at the time.
+
 ![NixOS](https://img.shields.io/badge/NixOS-25.11-5277C3?style=for-the-badge&logo=nixos&logoColor=white)
 ![Hyprland](https://img.shields.io/badge/Hyprland-Wayland-58E1FF?style=for-the-badge&logo=wayland&logoColor=white)
 ![Home Manager](https://img.shields.io/badge/Home_Manager-module-7EBAE4?style=for-the-badge&logo=nixos&logoColor=white)

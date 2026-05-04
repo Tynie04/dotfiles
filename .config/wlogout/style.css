@@ -1,0 +1,65 @@
+* {
+  background-image: none;
+  font-family: "JetBrainsMono Nerd Font";
+  font-size: 18px;
+  font-weight: 400;
+  text-shadow: none;
+}
+
+window {
+  background-color: rgba(16, 16, 16, 0.85);
+  border: none;
+}
+
+button {
+  color: #51576d;
+  background-color: #161616;
+  background-repeat: no-repeat;
+  background-position: center 38%;
+  background-size: 72px 72px;
+  border: 2px solid #2a2a2a;
+  border-radius: 12px;
+  margin: 6px;
+  box-shadow: none;
+  text-shadow: none;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+#lock     { background-image: image(url("/home/tijnw/dotfiles/.config/wlogout/icons/lock.png")); }
+#logout   { background-image: image(url("/home/tijnw/dotfiles/.config/wlogout/icons/logout.png")); }
+#suspend  { background-image: image(url("/home/tijnw/dotfiles/.config/wlogout/icons/suspend.png")); }
+#hibernate{ background-image: image(url("/home/tijnw/dotfiles/.config/wlogout/icons/hibernate.png")); }
+#shutdown { background-image: image(url("/home/tijnw/dotfiles/.config/wlogout/icons/shutdown.png")); }
+#reboot   { background-image: image(url("/home/tijnw/dotfiles/.config/wlogout/icons/reboot.png")); }
+
+button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+#lock:hover {
+  border-color: #99d1db;
+  color: #99d1db;
+}
+#logout:hover {
+  border-color: #ca9ee6;
+  color: #ca9ee6;
+}
+#suspend:hover {
+  border-color: #a6d189;
+  color: #a6d189;
+}
+#hibernate:hover {
+  border-color: #e5c890;
+  color: #e5c890;
+}
+#shutdown:hover {
+  border-color: #e78284;
+  color: #e78284;
+}
+#reboot:hover {
+  border-color: #8caaee;
+  color: #8caaee;
+}

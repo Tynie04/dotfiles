@@ -13,8 +13,10 @@
     firefox
     vscode
     xfce.thunar
+    file-roller
     cheese
     obs-studio
+    obsidian
 
     # hyprland
     hyprlock

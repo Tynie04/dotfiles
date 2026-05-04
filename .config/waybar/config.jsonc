@@ -84,7 +84,7 @@
 
   "custom/power": {
     "tooltip": false,
-    "on-click": "wlogout &",
+    "on-click": "wlogout --margin-top 300 --margin-bottom 300 --margin-left 400 --margin-right 400 &",
     "format": "⏻"
   },
 
