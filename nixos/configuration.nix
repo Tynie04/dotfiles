@@ -60,6 +60,13 @@
     pulse.enable = true;
   };
 
+  services.sunshine = {
+    enable = true;
+    autoStart = true;
+    capSysAdmin = true;
+    openFirewall = true;
+  };
+
   systemd.services.greetd.preStart = ''
     for i in 1 2 3 4 5 6; do
       ${pkgs.kbd}/bin/setleds -D +num < /dev/tty$i 2>/dev/null || true
@@ -70,7 +77,7 @@
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --sessions /run/current-system/sw/share/wayland-sessions:/run/current-system/sw/share/xsessions";
         user = "greeter";
       };
     };
@@ -95,6 +102,19 @@
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
   services.blueman.enable = true;
+
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver
+      libva-vdpau-driver
+    ];
+  };
+
+  boot.kernelModules = [ "uinput" ];
+  services.udev.extraRules = ''
+    KERNEL=="uinput", MODE="0660", GROUP="input", OPTIONS+="static_node=uinput"
+  '';
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
@@ -122,16 +142,25 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.tijnw = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "video" "audio" ];
+    extraGroups = [ "wheel" "networkmanager" "video" "audio" "input"];
     initialPassword = "changeme";
     shell = pkgs.fish;
   };
 
   programs.fish.enable = true;
-
-
   programs.hyprland.enable = true;
 
+  services.xserver.enable = true;
+  services.desktopManager.plasma6.enable = true;
+
+  services.tailscale.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+    };
+  };
 
   environment.systemPackages = with pkgs; [
     git
