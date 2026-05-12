@@ -2,7 +2,6 @@
 {
   home.packages = with pkgs; [
     # terminal & editors
-    kitty
     neovim
     ripgrep
     unzip
@@ -12,15 +11,13 @@
     # browser & apps
     firefox
     vscode
-    xfce.thunar
+    thunar
     file-roller
     cheese
     obs-studio
     obsidian
 
-    # hyprland
-    hyprlock
-    hypridle
+    # hyprland tools
     polkit_gnome
     grim
     slurp
@@ -31,15 +28,10 @@
     pavucontrol
 
     # rice
-    waybar
     rofi
-    hyprpaper
-    dunst
-    libnotify
-    wlogout
     copyq
     adwaita-icon-theme
-    starship
+    wlogout
 
     # network
     networkmanagerapplet

@@ -1,11 +1,17 @@
 # dotfiles
 
-> NixOS configuration and dotfiles for **hermes2**. Declarative, reproducible, and easy to set up on any machine.
+Personal NixOS configuration for **hermes2**. Built with flakes and Home Manager as a NixOS module,
+meaning a single `nh os switch ~/dotfiles` rebuilds both the system and the user environment at once.
+
+Everything is declarative. The system state is fully described by this repository. If something
+breaks, roll back through the bootloader. If you set up a new machine, clone and rebuild.
 
 > [!IMPORTANT]
-> This is probably not the best or most optimal way of doing stuff, but since i am just starting to learn NixOs, it is the way i decided to do stuff for now, since it made sense for me at the time.
+> This is a personal learning project. I am still figuring out NixOS, so some things are probably
+> not done in the most optimal or idiomatic way. It works for me, but take it as inspiration rather
+> than a reference for best practices.
 
-![NixOS](https://img.shields.io/badge/NixOS-25.11-5277C3?style=for-the-badge&logo=nixos&logoColor=white)
+![NixOS](https://img.shields.io/badge/NixOS-unstable-5277C3?style=for-the-badge&logo=nixos&logoColor=white)
 ![Hyprland](https://img.shields.io/badge/Hyprland-Wayland-58E1FF?style=for-the-badge&logo=wayland&logoColor=white)
 ![Home Manager](https://img.shields.io/badge/Home_Manager-module-7EBAE4?style=for-the-badge&logo=nixos&logoColor=white)
 ![Fish](https://img.shields.io/badge/Fish-shell-4AAB9B?style=for-the-badge&logo=fish&logoColor=white)
@@ -14,20 +20,21 @@
 
 ## Stack
 
-| Component      | Tool        |
-| -------------- | ----------- |
-| OS             | NixOS 25.11 |
-| Window manager | Hyprland    |
-| Bar            | Waybar      |
-| Terminal       | Kitty       |
-| Shell          | Fish        |
-| Shell prompt   | Starship    |
-| Launcher       | Rofi        |
-| Notifications  | Dunst       |
-| Wallpaper      | Hyprpaper   |
-| Lock screen    | Hyprlock    |
-| Idle daemon    | Hypridle    |
-| Clipboard      | CopyQ       |
+| Component      | Tool             |
+| -------------- | ---------------- |
+| OS             | NixOS (unstable) |
+| Window manager | Hyprland         |
+| Bar            | Waybar           |
+| Terminal       | Kitty            |
+| Shell          | Fish             |
+| Prompt         | Starship         |
+| Launcher       | Rofi             |
+| Notifications  | Dunst            |
+| Wallpaper      | Hyprpaper        |
+| Lock screen    | Hyprlock         |
+| Idle daemon    | Hypridle         |
+| Clipboard      | CopyQ            |
+| Login manager  | greetd           |
 
 ---
 
@@ -35,33 +42,47 @@
 
 ```
 dotfiles/
-├── nixos/
-│   ├── configuration.nix           # System config (services, users, packages)
-│   └── hardware-configuration.nix  # Generated per machine, not committed
-├── home/
-│   ├── home.nix                    # Home Manager entry point
-│   ├── git.nix                     # Git config and SSH signing
-│   ├── packages.nix                # User packages
-│   ├── shell.nix                   # Fish shell and Starship config
-│   └── dotfiles.nix                # Symlinks .config into place
-├── .config/
-│   ├── hypr/                       # Hyprland, Hyprpaper, Hyprlock, Hypridle
-│   ├── waybar/                     # Waybar config and Go scripts
-│   ├── kitty/                      # Kitty terminal config
-│   ├── wlogout/                    # Wlogout layout
-│   └── starship.toml               # Shell prompt config
-└── wallpapers/                     # Wallpaper images
+├── flake.nix                    entry point, defines nixosConfigurations.hermes2
+├── flake.lock                   pinned dependency versions
+├── hosts/
+│   └── hermes2/                 per-machine overrides and hardware config
+├── system/                      NixOS system modules, applied system-wide
+│   ├── core/                    boot loader, users, locale, timezone, polkit
+│   ├── hardware/                graphics drivers, bluetooth
+│   ├── network/                 networkmanager, tailscale
+│   ├── nix/                     nix daemon settings, nh, flake registry
+│   ├── programs/                system programs, fonts, xdg portal, home-manager
+│   └── services/                greetd, pipewire, sunshine
+├── home/                        Home Manager modules, applied per-user
+│   ├── programs/                user package list
+│   ├── terminal/                kitty, fish, starship, git
+│   └── wayland/                 hyprland, waybar, rofi, dunst, hyprlock, hypridle, wlogout
+├── .config/                     raw config files sourced by HM modules
+│   ├── waybar/                  waybar stylesheet and custom Go widgets
+│   ├── rofi/                    rofi theme and launcher config
+│   └── wlogout/                 wlogout layout, stylesheet and button icons
+└── wallpapers/                  wallpaper images
 ```
+
+> [!NOTE]
+> Each subdirectory has its own README explaining what lives there, what each file does,
+> and what to change when setting up on a new machine.
 
 ---
 
 ## How it works
 
-`/etc/nixos/configuration.nix` is a symlink to `nixos/configuration.nix` in this repo. Home Manager runs as a NixOS module, so a single `sudo nixos-rebuild switch` applies both the system config and the user environment at once.
+`flake.nix` defines a single NixOS configuration called `hermes2`. It imports the host entry point
+at `hosts/hermes2/`, which pulls in all the `system/` modules. Home Manager runs as a NixOS module,
+so user config is applied in the same rebuild pass as system config. There is no separate
+`home-manager switch` step.
 
-Config files under `.config/` are symlinked into `~/.config/` via `mkOutOfStoreSymlink`, meaning edits to files in this repo take effect **immediately** without a rebuild. Hyprland reloads automatically after every `nixos-rebuild switch`.
+Config files that do not have a good Home Manager module (waybar style, rofi theme, wlogout icons)
+live in `.config/` and are sourced into the Nix store via `xdg.configFile`. They are tracked in git.
 
-> `hardware-configuration.nix` is machine-specific and not committed to git. Each machine keeps its own copy at `~/dotfiles/nixos/hardware-configuration.nix`.
+> [!IMPORTANT]
+> Nix flakes only see files that are tracked by git. Always run `git add` on new or changed files
+> before running `nh os switch`, otherwise Nix will silently ignore your changes.
 
 ---
 
@@ -69,141 +90,126 @@ Config files under `.config/` are symlinked into `~/.config/` via `mkOutOfStoreS
 
 ### 1. Install NixOS
 
-Follow the standard NixOS installation. This generates `/etc/nixos/hardware-configuration.nix`.
+Follow the standard NixOS installation guide. The installer generates a `hardware-configuration.nix`
+for your specific machine. Keep it, you will need it in step 3.
 
-### 2. Add the Home Manager channel
+### 2. Clone this repository
 
-```bash
-sudo nix-channel --add https://github.com/nix-community/home-manager/archive/release-25.11.tar.gz home-manager
-sudo nix-channel --update
-```
-
-### 3. Clone this repo
-
-> Use HTTPS for the initial clone since SSH isn't set up yet.
+> [!NOTE]
+> Use HTTPS for the first clone since SSH keys are not set up yet.
 
 ```bash
-git clone https://github.com/Tynie04/dotfiles.git ~/dotfiles
+nix-shell -p git --run "git clone https://github.com/Tynie04/dotfiles.git ~/dotfiles"
 ```
 
-### 4. Copy hardware configuration
+### 3. Add the hardware configuration
+
+For hermes2, copy the generated hardware config into the host directory:
 
 ```bash
-cp /etc/nixos/hardware-configuration.nix ~/dotfiles/nixos/hardware-configuration.nix
+cp /etc/nixos/hardware-configuration.nix ~/dotfiles/hosts/hermes2/hardware-configuration.nix
+git -C ~/dotfiles add hosts/hermes2/hardware-configuration.nix
 ```
 
-### 5. Symlink NixOS configuration
+For a different machine, see `hosts/README.md` for how to create a new host.
+
+### 4. First rebuild
 
 ```bash
-sudo ln -sf ~/dotfiles/nixos/configuration.nix /etc/nixos/configuration.nix
+sudo nix --experimental-features "nix-command flakes" nixos-rebuild switch --flake ~/dotfiles#hermes2
 ```
 
-### 6. Rebuild
+After this first rebuild, `nh` is installed and flakes are enabled permanently. Use `nh` from now on:
 
 ```bash
-sudo nixos-rebuild switch
+nh os switch ~/dotfiles
 ```
 
-This installs all packages, applies the system config, and sets up Home Manager including all `.config` symlinks.
+### 5. Change your password
 
-### 7. Compile the Waybar scripts
-
-The weather and docker widgets are written in Go and must be compiled on the machine since binaries are not committed.
-
-```bash
-cd ~/dotfiles/.config/waybar/scripts/weather-stats && CGO_ENABLED=0 go build -o weather-stats .
-cd ~/dotfiles/.config/waybar/scripts/docker-stats && CGO_ENABLED=0 go build -o docker-stats .
-```
-
-### 8. Change your password
-
-> The initial password is `changeme`. Change it immediately.
+> [!WARNING]
+> The initial password in `system/core/users.nix` is `changeme`. Change it immediately after first login.
 
 ```bash
 passwd
 ```
 
-### 9. Set up SSH key for Git signing and push
+### 6. Set up SSH for GitHub
+
+Generate a key and add it to your GitHub account as both an authentication key and a signing key.
 
 ```bash
 ssh-keygen -t ed25519 -C "your@email.com" -f ~/.ssh/github
+cat ~/.ssh/github.pub
 ```
 
-Add `~/.ssh/github.pub` as both an **authentication key** and a **signing key** in your GitHub account settings. Then switch the remote from HTTPS to SSH:
+Add the public key in GitHub under Settings > SSH and GPG keys, once for Authentication and once
+for Signing. Then switch the git remote to SSH:
 
 ```bash
-cd ~/dotfiles && git remote set-url origin git@github.com:Tynie04/dotfiles.git
+cd ~/dotfiles
+git remote set-url origin git@github.com:Tynie04/dotfiles.git
 ```
 
+### 7. Compile the Waybar Go scripts
+
+The weather and docker status widgets are custom Go programs. Build them once after the first rebuild.
+
+```bash
+cd ~/dotfiles/.config/waybar/scripts/weather-stats && go build -o weather-stats .
+cd ~/dotfiles/.config/waybar/scripts/docker-stats  && go build -o docker-stats .
+```
+
+> [!TIP]
+> If you do not use docker, remove the `custom/docker` module from `home/wayland/waybar.nix`.
+
 ---
 
-## Day-to-day
+## Day-to-day usage
 
-| Task                                         | How                                                               |
-| -------------------------------------------- | ----------------------------------------------------------------- |
-| Edit Hyprland / Waybar / Kitty config        | Edit `~/dotfiles/.config/` directly, changes are live immediately |
-| Add a user package                           | Add to `home/packages.nix`, then rebuild                          |
-| Add a system package                         | Add to `nixos/configuration.nix`, then rebuild                    |
-| Test changes without cluttering boot entries | `sudo nixos-rebuild test`                                         |
-| Apply changes permanently                    | `sudo nixos-rebuild switch`                                       |
-| Save and push changes                        | `git add -A && git commit -m "..." && git push`                   |
+| Task                              | How                                                             |
+| --------------------------------- | --------------------------------------------------------------- |
+| Apply any config change           | `nh os switch ~/dotfiles`                                       |
+| Add a user package                | Add to `home/programs/packages.nix`, then rebuild              |
+| Add a system service or program   | Edit the relevant file under `system/`, then rebuild           |
+| Add a program with its own config | Create a `.nix` file, import it in the parent `default.nix`   |
+| Roll back a bad build             | Reboot and select a previous generation in the bootloader      |
+| Clean up old generations          | `nh clean all` (also runs automatically, kept for 30 days)     |
+| Push changes to GitHub            | `git add -A && git commit -m "..." && git push`                |
 
 ---
 
-<details>
-<summary><strong>Keybindings</strong></summary>
-<br>
+## Keybindings
 
-| Keybind               | Action                                       |
-| --------------------- | -------------------------------------------- |
-| `SUPER + Q`           | Open terminal (`kitty`)                      |
-| `SUPER + C`           | Close active window                          |
-| `SUPER + E`           | File manager (`thunar`)                      |
-| `SUPER + Space`       | App launcher (`rofi`)                        |
-| `SUPER + V`           | Clipboard history (`copyq`)                  |
-| `SUPER + L`           | Lock screen (`hyprlock`)                     |
-| `SUPER + F`           | True fullscreen (over waybar)                |
-| `SUPER + SHIFT + F`   | Toggle floating                              |
-| `SUPER + SHIFT + S`   | Screenshot region → clipboard + `~/Pictures` |
-| `Print`               | Screenshot region → clipboard + `~/Pictures` |
-| `SUPER + M`           | Exit Hyprland                                |
-| `SUPER + P`           | Pseudo tile (dwindle)                        |
-| `SUPER + J`           | Toggle split (dwindle)                       |
-| `SUPER + arrows`      | Move focus                                   |
-| `SUPER + 1-0`         | Switch workspace                             |
-| `SUPER + SHIFT + 1-0` | Move window to workspace                     |
-| `SUPER + scroll`      | Scroll through workspaces                    |
-| `SUPER + LMB drag`    | Move window                                  |
-| `SUPER + RMB drag`    | Resize window                                |
+> [!NOTE]
+> The keyboard layout is Belgian (be). Workspace keys use Belgian key names in the config
+> (ampersand, eacute, quotedbl, etc.) but correspond to the number row 1 through 0.
 
-</details>
-
-<details>
-<summary><strong>Installed packages</strong></summary>
-<br>
-
-**System**
-`git` `vim` `wget` `curl`
-
-**Terminal & editors**
-`kitty` `fish` `neovim` `ripgrep` `unzip` `zip` `btop` `starship`
-
-**Apps**
-`firefox` `vscode` `thunar` `cheese` `obs-studio`
-
-**Hyprland ecosystem**
-`waybar` `rofi` `hyprlock` `hypridle` `hyprpaper` `dunst` `wlogout` `copyq` `grim` `slurp` `wl-clipboard` `brightnessctl` `pamixer` `playerctl` `polkit-gnome` `adwaita-icon-theme`
-
-**Network & bluetooth**
-`networkmanagerapplet` `blueman`
-
-**Coding**
-`claude-code` `python3` `uv` `go`
-
-</details>
+| Keybind              | Action                                        |
+| -------------------- | --------------------------------------------- |
+| SUPER + Q            | Open terminal (kitty)                         |
+| SUPER + C            | Close active window                           |
+| SUPER + E            | File manager (thunar)                         |
+| SUPER + Space        | App launcher (rofi)                           |
+| SUPER + V            | Clipboard history (copyq)                     |
+| SUPER + L            | Lock screen (hyprlock)                        |
+| SUPER + F            | Fullscreen                                    |
+| SUPER + SHIFT + F    | Toggle floating                               |
+| SUPER + SHIFT + S    | Screenshot region to clipboard + Pictures/    |
+| Print                | Screenshot region to clipboard + Pictures/    |
+| SUPER + M            | Exit Hyprland                                 |
+| SUPER + D            | Switch to previous workspace                  |
+| SUPER + P            | Pseudo tile (dwindle)                         |
+| SUPER + J            | Toggle split (dwindle)                        |
+| SUPER + arrow keys   | Move focus                                    |
+| SUPER + 1 through 0  | Switch workspace                              |
+| SUPER + SHIFT + 1-0  | Move window to workspace                      |
+| SUPER + scroll       | Scroll through workspaces                     |
+| SUPER + LMB drag     | Move window                                   |
+| SUPER + RMB drag     | Resize window                                 |
 
 ---
 
 ## Credits
 
-- Waybar config based on [victordantasdev/waybar](https://github.com/victordantasdev/waybar)
+Waybar config based on [victordantasdev/waybar](https://github.com/victordantasdev/waybar).

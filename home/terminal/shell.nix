@@ -1,0 +1,43 @@
+{ ... }:
+{
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = ''
+      set fish_greeting ""
+    '';
+  };
+
+  programs.starship = {
+    enable = true;
+    enableFishIntegration = true;
+
+    settings = {
+      format = "$username$directory$git_branch$line_break$character";
+
+      username = {
+        show_always = true;
+        style_user  = "fg:#c6d0f5";
+        format      = "[$user](fg:#c6d0f5) in ";
+      };
+
+      directory = {
+        style              = "fg:#8caaee";
+        format             = "[$path]($style) ";
+        truncation_length  = 4;
+        truncation_symbol  = "…/";
+      };
+
+      git_branch = {
+        symbol = "󰘬 ";
+        style  = "fg:#99d1db";
+        format = "on [$symbol$branch]($style) ";
+      };
+
+      character = {
+        success_symbol = "[❯](fg:#a6d189)";
+        error_symbol   = "[❯](fg:#e78284)";
+        vimcmd_symbol  = "[❮](fg:#ca9ee6)";
+      };
+    };
+  };
+}

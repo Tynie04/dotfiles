@@ -1,0 +1,123 @@
+{ ... }:
+{
+  programs.waybar = {
+    enable = true;
+
+    settings = [{
+      layer    = "top";
+      position = "top";
+
+      modules-left   = [ "hyprland/workspaces" ];
+      modules-center = [ "clock" "custom/weather" ];
+      modules-right  = [
+        "pulseaudio"
+        "custom/uptime"
+        "backlight"
+        "battery"
+        "network"
+        "cpu"
+        "memory"
+        "custom/docker"
+        "custom/lock"
+        "custom/power"
+      ];
+
+      "hyprland/workspaces" = {
+        format = "{name}: {icon}";
+        format-icons = {
+          active  = "";
+          default = "";
+        };
+      };
+
+      tray = {
+        icon-size = 16;
+        spacing   = 10;
+      };
+
+      "custom/music" = {
+        format     = "  {}";
+        escape     = true;
+        interval   = 5;
+        tooltip    = false;
+        exec       = "playerctl metadata --format='{{ artist }} - {{ title }}'";
+        on-click   = "playerctl play-pause";
+        max-length = 50;
+      };
+
+      clock = {
+        timezone       = "Europe/Brussels";
+        tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+        format         = "{:%d/%m/%Y - %H:%M}";
+        interval       = 1;
+      };
+
+      network = {
+        format-wifi       = "󰤢 {bandwidthDownBits}";
+        format-ethernet   = "󰈀 {bandwidthDownBits}";
+        format-disconnected = "󰤠 No Network";
+        interval          = 5;
+        tooltip           = false;
+      };
+
+      cpu = {
+        interval     = 1;
+        format       = "  {icon0}{icon1}{icon2}{icon3} {usage:>2}%";
+        format-icons = [ "▁" "▂" "▃" "▄" "▅" "▆" "▇" "█" ];
+      };
+
+      memory = {
+        interval = 30;
+        format   = "  {used:0.1f}G/{total:0.1f}G";
+      };
+
+      "custom/uptime" = {
+        format   = "{}";
+        interval = 1600;
+        exec     = "sh -c '(uptime -p)'";
+      };
+
+      pulseaudio = {
+        format       = "{icon} {volume}%";
+        format-muted = "";
+        format-icons = {
+          default = [ "" "" " " ];
+        };
+        on-click = "pavucontrol";
+      };
+
+      "custom/power" = {
+        tooltip  = false;
+        on-click = "wlogout --margin-top 300 --margin-bottom 300 --margin-left 400 --margin-right 400 &";
+        format   = "⏻";
+      };
+
+      "custom/docker" = {
+        format      = "{}";
+        return-type = "json";
+        interval    = 10;
+        exec        = "$HOME/.config/waybar/scripts/docker-stats/docker-stats";
+        tooltip     = true;
+      };
+
+      "custom/weather" = {
+        format      = "{}";
+        tooltip     = true;
+        interval    = 1800;
+        exec        = "$HOME/.config/waybar/scripts/weather-stats/weather-stats";
+        return-type = "json";
+      };
+
+      "custom/lock" = {
+        tooltip  = false;
+        on-click = "hyprlock &";
+        format   = "󰌾";
+      };
+    }];
+
+    style = builtins.readFile ../../.config/waybar/style.css;
+  };
+
+  # scripts referenced by waybar exec fields
+  xdg.configFile."waybar/scripts".source = ../../.config/waybar/scripts;
+}
