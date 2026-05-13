@@ -11,8 +11,6 @@
     # browser & apps
     firefox
     vscode
-    thunar
-    file-roller
     cheese
     obs-studio
     obsidian

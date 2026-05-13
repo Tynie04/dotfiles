@@ -3,12 +3,13 @@
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = false;
+    configType = "hyprlang";
 
     settings = {
       monitor = ",preferred,auto,1";
 
       "$terminal"    = "kitty";
-      "$fileManager" = "thunar";
+      "$fileManager" = "dolphin";
       "$menu"        = "rofi -show drun";
       "$mainMod"     = "SUPER";
 

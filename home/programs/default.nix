@@ -1,4 +1,4 @@
 { ... }:
 {
-  imports = [ ./packages.nix ];
+  imports = [ ./packages.nix ./kde-desktop-overrides.nix ];
 }

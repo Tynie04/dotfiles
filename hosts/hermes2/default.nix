@@ -11,6 +11,7 @@
     ../../system/network/tailscale.nix
     ../../system/programs
     ../../system/services/greetd.nix
+    ../../system/services/kde.nix
     ../../system/services/pipewire.nix
     ../../system/services/sunshine.nix
   ];
