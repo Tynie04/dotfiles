@@ -3,11 +3,15 @@
 
   outputs =
     inputs @ { self, nixpkgs, hm, ... }:
+    let
+      hostName = "hermes2";
+    in
     {
-      nixosConfigurations.hermes2 = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs self; };
+      nixosConfigurations.${hostName} = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs self hostName; };
         modules = [
           ./hosts/hermes2
+          { networking.hostName = hostName; }
           {
             home-manager = {
               users.tijnw.imports = [ ./home ./hosts/hermes2/home.nix ];

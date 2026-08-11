@@ -16,9 +16,7 @@
     ../../system/services/docker.nix
   ];
 
-  networking.hostName = "hermes2";
-
-  environment.variables = {
+environment.variables = {
     XCURSOR_THEME = "Win10OS-Cursors";
     XCURSOR_SIZE = "24";
     TERMINAL = "kitty";

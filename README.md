@@ -102,9 +102,25 @@ for your specific machine. Keep it, you will need it in step 3.
 nix-shell -p git --run "git clone https://github.com/Tynie04/dotfiles.git ~/dotfiles"
 ```
 
-### 3. Add the hardware configuration
+### 3. Rename the host (optional)
 
-For hermes2, copy the generated hardware config into the host directory:
+The hostname is defined in one place in `flake.nix`:
+
+```nix
+let
+  hostName = "hermes2";
+in
+```
+
+To use a different hostname:
+
+1. Change `hostName` in `flake.nix`
+2. Rename the host directory: `mv hosts/hermes2 hosts/yourname`
+3. Update the two `./hosts/hermes2` path references in `flake.nix` to `./hosts/yourname`
+
+### 4. Add the hardware configuration
+
+Copy the generated hardware config into the host directory:
 
 ```bash
 cp /etc/nixos/hardware-configuration.nix ~/dotfiles/hosts/hermes2/hardware-configuration.nix
@@ -113,7 +129,7 @@ git -C ~/dotfiles add hosts/hermes2/hardware-configuration.nix
 
 For a different machine, see `hosts/README.md` for how to create a new host.
 
-### 4. First rebuild
+### 5. First rebuild
 
 ```bash
 sudo nix --experimental-features "nix-command flakes" nixos-rebuild switch --flake ~/dotfiles#hermes2
@@ -125,7 +141,7 @@ After this first rebuild, `nh` is installed and flakes are enabled permanently. 
 nh os switch ~/dotfiles
 ```
 
-### 5. Change your password
+### 6. Change your password
 
 > [!WARNING]
 > The initial password in `system/core/users.nix` is `changeme`. Change it immediately after first login.
@@ -134,7 +150,7 @@ nh os switch ~/dotfiles
 passwd
 ```
 
-### 6. Set up SSH for GitHub
+### 7. Set up SSH for GitHub
 
 Generate a key and add it to your GitHub account as both an authentication key and a signing key.
 
@@ -151,7 +167,7 @@ cd ~/dotfiles
 git remote set-url origin git@github.com:Tynie04/dotfiles.git
 ```
 
-### 7. Compile the Waybar Go scripts
+### 8. Compile the Waybar Go scripts
 
 The weather and docker status widgets are custom Go programs. Build them once after the first rebuild.
 
