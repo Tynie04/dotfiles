@@ -11,15 +11,14 @@
       "$terminal"    = "kitty";
       "$fileManager" = "dolphin";
       "$browser"     = "firefox";
-      "$menu"        = "rofi -show drun";
       "$mainMod"     = "SUPER";
 
       exec-once = [
         "hyprpaper"
-        "waybar"
+        "caelestia-shell"
         "hyprctl setcursor Bibata-Modern-Ice 24"
-        "copyq"
-        "dunst"
+        "wl-paste --type text --watch cliphist store"
+        "wl-paste --type image --watch cliphist store"
       ];
 
       env = [
@@ -124,20 +123,28 @@
 
       bind = [
         "$mainMod, Q, exec, $terminal"
-        "$mainmod, B, exec, $browser"
+        "$mainMod SHIFT, Q, exec, $HOME/.local/bin/toggle-caelestia.sh"
+        "$mainMod, B, exec, $browser"
         "$mainMod, C, killactive,"
         "$mainMod, M, exit,"
         "$mainMod, E, exec, $fileManager"
-        "$mainMod, V, exec, copyq toggle"
+        "$mainMod, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy"
+        "$mainMod SHIFT, V, exec, cliphist wipe"
         "$mainMod SHIFT, F, togglefloating,"
-        "$mainMod, space, exec, $menu"
+        "$mainMod, space, global, caelestia:launcher"
         "$mainMod, D, workspace, previous"
         "$mainMod, P, pseudo,"
         "$mainMod, J, togglesplit,"
-        "$mainMod, L, exec, hyprlock"
+        "$mainMod, L, global, caelestia:lock"
         "$mainMod, F, fullscreen, 0"
-        ", Print, exec, bash -c \"grim -g \\\"$(slurp)\\\" - | tee ~/Pictures/$(date +%Y-%m-%d_%H-%M-%S).png | wl-copy\""
-        "$mainMod SHIFT, S, exec, bash -c \"grim -g \\\"$(slurp)\\\" - | tee ~/Pictures/$(date +%Y-%m-%d_%H-%M-%S).png | wl-copy\""
+        "$mainMod, N, global, caelestia:dashboard"
+        "$mainMod, Tab, global, caelestia:utilities"
+        "$mainMod SHIFT, N, global, caelestia:sidebar"
+        "$mainMod, K, exec, caelestia shell drawers toggle bar"
+        "$mainMod SHIFT, K, exec, caelestia config set bar.persistent $(caelestia config get bar.persistent | grep -q true && echo false || echo true)"
+        "CTRL ALT, Delete, global, caelestia:session"
+        ", Print, global, caelestia:screenshotClip"
+        "$mainMod SHIFT, S, global, caelestia:screenshotFreezeClip"
         "$mainMod, left,  movefocus, l"
         "$mainMod, right, movefocus, r"
         "$mainMod, up,    movefocus, u"
@@ -190,18 +197,12 @@
     };
 
     extraConfig = ''
-      windowrule {
-        name = suppress-maximize
-        match:class = .*
-        suppress_event = maximize
-      }
+      source = ~/.config/hypr/monitors.conf
 
       windowrule {
-        name = copyq
-        match:class = ^(com.github.hluk.copyq)$
-        float = yes
-        size = 600 500
-        center = yes
+        name = sup press-maximize
+        match:class = .*
+        suppress_event = maximize
       }
 
       windowrule {

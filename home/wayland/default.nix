@@ -4,10 +4,7 @@
     ./hypr.nix
     ./hyprlock.nix
     ./hypridle.nix
-
-    ./waybar.nix
     ./rofi.nix
-    ./dunst.nix
-    ./wlogout.nix
+    ./quickshell.nix
   ];
 }

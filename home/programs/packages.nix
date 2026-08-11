@@ -14,6 +14,9 @@
     cheese
     obs-studio
     obsidian
+    spotify
+    discord
+    nwg-displays
 
     # hyprland tools
     polkit_gnome
@@ -27,9 +30,10 @@
 
     # rice
     rofi
-    copyq
+    cliphist
     adwaita-icon-theme
     wlogout
+    wl-clipboard
 
     # network
     networkmanagerapplet
