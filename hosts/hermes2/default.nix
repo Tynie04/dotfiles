@@ -13,14 +13,13 @@
     ../../system/services/greetd.nix
     ../../system/services/kde.nix
     ../../system/services/pipewire.nix
-    ../../system/services/sunshine.nix
     ../../system/services/docker.nix
   ];
 
   networking.hostName = "hermes2";
 
   environment.variables = {
-    XCURSOR_THEME = "Bibata-Modern-Ice";
+    XCURSOR_THEME = "Win10OS-Cursors";
     XCURSOR_SIZE = "24";
     TERMINAL = "kitty";
     NH_FLAKE = "/home/tijnw/dotfiles";
