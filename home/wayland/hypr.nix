@@ -10,6 +10,7 @@
 
       "$terminal"    = "kitty";
       "$fileManager" = "dolphin";
+      "$browser"     = "firefox";
       "$menu"        = "rofi -show drun";
       "$mainMod"     = "SUPER";
 
@@ -123,6 +124,7 @@
 
       bind = [
         "$mainMod, Q, exec, $terminal"
+        "$mainmod, B, exec, $browser"
         "$mainMod, C, killactive,"
         "$mainMod, M, exit,"
         "$mainMod, E, exec, $fileManager"
