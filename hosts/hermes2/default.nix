@@ -14,6 +14,7 @@
     ../../system/services/kde.nix
     ../../system/services/pipewire.nix
     ../../system/services/sunshine.nix
+    ../../system/services/docker.nix
   ];
 
   networking.hostName = "hermes2";
