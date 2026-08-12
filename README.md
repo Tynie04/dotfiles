@@ -20,21 +20,23 @@ breaks, roll back through the bootloader. If you set up a new machine, clone and
 
 ## Stack
 
-| Component      | Tool             |
-| -------------- | ---------------- |
-| OS             | NixOS (unstable) |
-| Window manager | Hyprland         |
-| Bar            | Waybar           |
-| Terminal       | Kitty            |
-| Shell          | Fish             |
-| Prompt         | Starship         |
-| Launcher       | Rofi             |
-| Notifications  | Dunst            |
-| Wallpaper      | Hyprpaper        |
-| Lock screen    | Hyprlock         |
-| Idle daemon    | Hypridle         |
-| Clipboard      | CopyQ            |
-| Login manager  | greetd           |
+| Component      | Tool                        |
+| -------------- | --------------------------- |
+| OS             | NixOS (unstable)            |
+| Window manager | Hyprland                    |
+| Shell          | Caelestia (Quickshell)      |
+| Bar            | Caelestia bar               |
+| Notifications  | Caelestia                   |
+| Launcher       | Caelestia launcher          |
+| Clipboard      | cliphist (via rofi dmenu)   |
+| Terminal       | Kitty                       |
+| Shell (fish)   | Fish                        |
+| Prompt         | Starship                    |
+| Wallpaper      | Hyprpaper + Caelestia       |
+| Lock screen    | Hyprlock (via Caelestia)    |
+| Idle daemon    | Hypridle                    |
+| Display mgmt   | nwg-displays                |
+| Login manager  | greetd                      |
 
 ---
 
@@ -52,15 +54,14 @@ dotfiles/
 │   ├── network/                 networkmanager, tailscale
 │   ├── nix/                     nix daemon settings, nh, flake registry
 │   ├── programs/                system programs, fonts, xdg portal, home-manager
-│   └── services/                greetd, pipewire, sunshine
+│   └── services/                greetd, pipewire
 ├── home/                        Home Manager modules, applied per-user
 │   ├── programs/                user package list
 │   ├── terminal/                kitty, fish, starship, git
-│   └── wayland/                 hyprland, waybar, rofi, dunst, hyprlock, hypridle, wlogout
+│   └── wayland/                 hyprland, caelestia, hyprlock, hypridle, rofi
 ├── .config/                     raw config files sourced by HM modules
-│   ├── waybar/                  waybar stylesheet and custom Go widgets
-│   ├── rofi/                    rofi theme and launcher config
-│   └── wlogout/                 wlogout layout, stylesheet and button icons
+│   ├── rofi/                    rofi theme (used for clipboard dmenu)
+│   └── wlogout/                 wlogout layout and icons (fallback)
 └── wallpapers/                  wallpaper images
 ```
 
@@ -77,8 +78,9 @@ at `hosts/hermes2/`, which pulls in all the `system/` modules. Home Manager runs
 so user config is applied in the same rebuild pass as system config. There is no separate
 `home-manager switch` step.
 
-Config files that do not have a good Home Manager module (waybar style, rofi theme, wlogout icons)
-live in `.config/` and are sourced into the Nix store via `xdg.configFile`. They are tracked in git.
+Caelestia is installed via flake inputs (`caelestia-shell` and `caelestia-cli`). Its user config
+(`shell.json`) and any QML customizations are managed declaratively via `xdg.configFile` in
+`home/wayland/quickshell.nix`, so they are fully reproduced on a fresh install.
 
 > [!IMPORTANT]
 > Nix flakes only see files that are tracked by git. Always run `git add` on new or changed files
@@ -167,17 +169,35 @@ cd ~/dotfiles
 git remote set-url origin git@github.com:Tynie04/dotfiles.git
 ```
 
-### 8. Compile the Waybar Go scripts
+### 8. Clone the caelestia shell config
 
-The weather and docker status widgets are custom Go programs. Build them once after the first rebuild.
+Caelestia's packages are installed by Nix, but the QML shell config must be cloned separately.
+The `shell.json` user config and QML customizations are applied automatically by Home Manager,
+but the base shell needs to be cloned first:
 
 ```bash
-cd ~/dotfiles/.config/waybar/scripts/weather-stats && go build -o weather-stats .
-cd ~/dotfiles/.config/waybar/scripts/docker-stats  && go build -o docker-stats .
+git clone https://github.com/caelestia-dots/shell ~/.config/quickshell/caelestia
 ```
 
-> [!TIP]
-> If you do not use docker, remove the `custom/docker` module from `home/wayland/waybar.nix`.
+### 9. Set the wallpaper
+
+After logging into Hyprland, set the caelestia wallpaper and colour scheme:
+
+```bash
+caelestia wallpaper -f ~/dotfiles/wallpapers/caelestia-default.webp
+caelestia scheme set -n dynamic
+```
+
+### 10. Configure monitors
+
+If you have multiple monitors, use nwg-displays to set up their layout:
+
+```bash
+nwg-displays
+```
+
+Apply the layout — it writes to `~/.config/hypr/monitors.conf` which is automatically sourced
+by Hyprland.
 
 ---
 
@@ -192,6 +212,7 @@ cd ~/dotfiles/.config/waybar/scripts/docker-stats  && go build -o docker-stats .
 | Roll back a bad build             | Reboot and select a previous generation in the bootloader      |
 | Clean up old generations          | `nh clean all` (also runs automatically, kept for 30 days)     |
 | Push changes to GitHub            | `git add -A && git commit -m "..." && git push`                |
+| Toggle between caelestia/waybar   | `SUPER + SHIFT + Q`                                            |
 
 ---
 
@@ -204,15 +225,23 @@ cd ~/dotfiles/.config/waybar/scripts/docker-stats  && go build -o docker-stats .
 | Keybind              | Action                                        |
 | -------------------- | --------------------------------------------- |
 | SUPER + Q            | Open terminal (kitty)                         |
+| SUPER + B            | Open browser (firefox)                        |
 | SUPER + C            | Close active window                           |
-| SUPER + E            | File manager (thunar)                         |
-| SUPER + Space        | App launcher (rofi)                           |
-| SUPER + V            | Clipboard history (copyq)                     |
-| SUPER + L            | Lock screen (hyprlock)                        |
+| SUPER + E            | File manager (dolphin)                        |
+| SUPER + Space        | App launcher (caelestia)                      |
+| SUPER + V            | Clipboard history picker                      |
+| SUPER + SHIFT + V    | Clear clipboard history                       |
+| SUPER + L            | Lock screen                                   |
 | SUPER + F            | Fullscreen                                    |
 | SUPER + SHIFT + F    | Toggle floating                               |
-| SUPER + SHIFT + S    | Screenshot region to clipboard + Pictures/    |
-| Print                | Screenshot region to clipboard + Pictures/    |
+| SUPER + SHIFT + S    | Screenshot (freeze + region) to clipboard     |
+| Print                | Screenshot region to clipboard                |
+| SUPER + N            | Caelestia dashboard                           |
+| SUPER + SHIFT + N    | Caelestia notification sidebar                |
+| SUPER + Tab          | Caelestia utilities panel                     |
+| SUPER + K            | Caelestia bar (workspaces/tray)               |
+| SUPER + SHIFT + Q    | Toggle caelestia / waybar fallback            |
+| CTRL + ALT + Delete  | Session menu                                  |
 | SUPER + M            | Exit Hyprland                                 |
 | SUPER + D            | Switch to previous workspace                  |
 | SUPER + P            | Pseudo tile (dwindle)                         |
@@ -228,4 +257,4 @@ cd ~/dotfiles/.config/waybar/scripts/docker-stats  && go build -o docker-stats .
 
 ## Credits
 
-Waybar config based on [victordantasdev/waybar](https://github.com/victordantasdev/waybar).
+Caelestia shell by [caelestia-dots](https://github.com/caelestia-dots).
